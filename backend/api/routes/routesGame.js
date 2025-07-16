@@ -1,0 +1,1 @@
+//se declaran las rutas de donde extraer las visuales actualizadas para el front (duante una partida).

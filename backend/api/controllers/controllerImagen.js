@@ -1,0 +1,1 @@
+//se extrae el .json las imagenes a enviar.

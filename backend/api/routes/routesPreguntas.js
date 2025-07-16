@@ -1,0 +1,1 @@
+//se declaran las rutas de donde extraer los datos de preguntas para actualizadas el cuestionario (duante una partida).

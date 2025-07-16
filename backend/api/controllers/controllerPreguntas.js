@@ -1,0 +1,1 @@
+//Se extrae del .json los texto y estructura de las pregunas o las imagenes y audios, para enviar.
