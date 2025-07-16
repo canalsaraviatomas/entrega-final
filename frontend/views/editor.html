@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editor de Preguntas</title>
+    <link rel="stylesheet" href="/css/game.css" />
+  </head>
+  <body>
+    <div class="editor-container">
+      <h2>Gestor de Preguntas</h2>
+      <button onclick="window.location.href='/views/game.html'">
+        Volver al juego
+      </button>
+      <h3>Preguntas actuales</h3>
+      <table
+        id="tablaPreguntas"
+        border="1"
+        style="width: 100%; margin-bottom: 16px"
+      >
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Pregunta</th>
+            <th>Respuestas</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <h3 id="formTitulo">Agregar nueva pregunta</h3>
+      <form id="formPregunta">
+        <label>Número: <input type="number" id="numero" required /></label
+        ><br />
+        <label>Pregunta: <input type="text" id="pregunta" required /></label
+        ><br />
+        <label>Imagen pregunta: <input type="text" id="imagenPregunta" /></label
+        ><br />
+        <label>Audio pregunta: <input type="text" id="audioPregunta" /></label
+        ><br />
+        <fieldset>
+          <legend>Respuestas</legend>
+          <div id="respuestas">
+            <!-- Se generan inputs dinámicamente -->
+          </div>
+        </fieldset>
+        <button type="submit" id="btnGuardar">Agregar</button>
+        <button type="button" id="btnCancelar" style="display: none">
+          Cancelar edición
+        </button>
+      </form>
+      <div id="resultadoEditor" style="margin-top: 12px; color: #d32f2f"></div>
+    </div>
+    <script src="/js/editor.js"></script>
+  </body>
+</html>
