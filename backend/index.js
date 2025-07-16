@@ -9,21 +9,28 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// View engine (mantener si usas EJS)
-app.set("view engine", "ejs");
-app.set("views", path.resolve(__dirname, "views"));
-
+// Middleware para parsear JSON y urlencoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Rutas de la API
 app.use("/api", apiRouter);
 
-// Servir archivos estáticos desde public/
-app.use(express.static(path.join(__dirname, "../public")));
+// Servir archivos estáticos del frontend (css, js)
+app.use("/static/css", express.static(path.join(__dirname, "../frontend/css")));
+app.use("/static/js", express.static(path.join(__dirname, "../frontend/js")));
 
-// (Opcional) Acceso a lógica del juego desde logicModules
-// console.log(Object.keys(logicModules));
+// Servir index.html como pantalla de inicio
+app.get(["/", "/index.html"], (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/views/index.html"));
+});
+
+app.get("/game.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/views/game.html"));
+});
+
+// Servir imágenes y otros recursos si existen
+app.use("/static/img", express.static(path.join(__dirname, "../imagenes")));
 
 app.listen(PORT, () =>
   console.log(`Servidor escuchando en http://localhost:${PORT}`)

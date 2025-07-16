@@ -39,7 +39,7 @@ const numeroRandom = (req, res) => {
 
 const join = (req, res) => {
   let partida = creandoPartida(req.body);
-  res.redirect("/partida/" + partida.tableroId);
+  res.json({ url: `/game.html?id=${partida.tableroId}` });
 };
 
 const joining = (req, res) => {
@@ -57,14 +57,12 @@ const joining = (req, res) => {
 const joinExisting = (req, res) => {
   let partida = uniendoPartida(req.body);
   if (!partida) {
-    res.send("Tablero desconocido");
-    return;
+    return res.status(404).send("Tablero desconocido");
   }
   if (partida.lleno) {
-    res.send("Partida llena");
-    return;
+    return res.status(400).send("Partida llena");
   }
-  res.redirect("/partida/" + partida.tableroId);
+  res.json({ url: `/game.html?id=${partida.tableroId}` });
 };
 
 const update = (req, res) => {
