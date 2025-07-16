@@ -20,7 +20,8 @@ socket.on("turn-timer", (data) => {
 socket.on("turn-timeout", (data) => {
   clearInterval(timerInterval);
   document.getElementById("timer").textContent = "Tiempo: --";
-  document.getElementById("estado").textContent = `Turno terminado por tiempo (${data.jugador?.nombre || "Jugador"})`;
+  document.getElementById("estado").textContent =
+    `Turno terminado por tiempo (${data.jugador?.nombre || "Jugador"})`;
   document.getElementById("btnLanzarDado").disabled = true;
   document.getElementById("btnResponder").disabled = true;
 });

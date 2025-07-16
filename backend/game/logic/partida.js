@@ -4,7 +4,7 @@ class Partida {
     this.tiempoRestante = segundos;
     this._timer = setTimeout(() => {
       this.tiempoRestante = 0;
-      if (typeof onTimeout === 'function') onTimeout();
+      if (typeof onTimeout === "function") onTimeout();
     }, segundos * 1000);
   }
 
@@ -17,7 +17,7 @@ class Partida {
     this.tiempoRestante = segundos;
     this._timer = setTimeout(() => {
       this.tiempoRestante = 0;
-      if (typeof onTimeout === 'function') onTimeout();
+      if (typeof onTimeout === "function") onTimeout();
     }, segundos * 1000);
   }
 
