@@ -18,10 +18,61 @@ app.get("/", (req, res) => {
 const server = http.createServer(app);
 const io = socketIO(server);
 
+// Almacenar jugadores conectados temporalmente en memoria
+let jugadores = [];
+let partidaIniciada = false;
+
 io.on("connection", (socket) => {
   console.log(`🟢 Cliente conectado: ${socket.id}`);
+
+  // Listener: join-game
+  socket.on("join-game", (data) => {
+    jugadores.push({
+      id: socket.id,
+      nombre: data?.nombre || `Jugador${jugadores.length + 1}`,
+    });
+    console.log(`Jugador unido: ${socket.id} (${data?.nombre})`);
+    io.emit("game-state", { jugadores, partidaIniciada });
+  });
+
+  // Listener: start-game
+  socket.on("start-game", () => {
+    if (jugadores.length >= 2 && !partidaIniciada) {
+      partidaIniciada = true;
+      console.log("Partida iniciada");
+      io.emit("game-state", { jugadores, partidaIniciada });
+      // Emitir pregunta genérica
+      io.emit("question", { pregunta: "Pregunta de ejemplo" });
+    }
+  });
+
+  // Listener: roll-dice
+  socket.on("roll-dice", (data) => {
+    console.log(`Dado lanzado por ${socket.id}:`, data);
+    // Emitir resultado a todos
+    io.emit("game-state", { jugadores, partidaIniciada, dado: data });
+  });
+
+  // Listener: answer-question
+  socket.on("answer-question", (data) => {
+    console.log(`Respuesta recibida de ${socket.id}:`, data);
+    // Emitir estado actualizado
+    io.emit("game-state", { jugadores, partidaIniciada });
+  });
+
+  // Listener: disconnect
   socket.on("disconnect", () => {
     console.log(`🔴 Cliente desconectado: ${socket.id}`);
+    // Eliminar jugador
+    jugadores = jugadores.filter((j) => j.id !== socket.id);
+    if (partidaIniciada && jugadores.length === 1) {
+      // Emitir game-over al único jugador restante
+      io.emit("game-over", { ganador: jugadores[0] });
+      partidaIniciada = false;
+      jugadores = [];
+    } else {
+      io.emit("game-state", { jugadores, partidaIniciada });
+    }
   });
 });
 
