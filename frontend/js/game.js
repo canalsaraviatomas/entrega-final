@@ -1,3 +1,29 @@
+let timerInterval = null;
+let tiempoRestante = 0;
+
+// Evento de temporizador de turno
+socket.on("turn-timer", (data) => {
+  tiempoRestante = data.segundos;
+  document.getElementById("timer").textContent = `Tiempo: ${tiempoRestante}s`;
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    tiempoRestante--;
+    document.getElementById("timer").textContent = `Tiempo: ${tiempoRestante}s`;
+    if (tiempoRestante <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById("timer").textContent = "Tiempo: --";
+    }
+  }, 1000);
+});
+
+// Evento de fin de turno por tiempo
+socket.on("turn-timeout", (data) => {
+  clearInterval(timerInterval);
+  document.getElementById("timer").textContent = "Tiempo: --";
+  document.getElementById("estado").textContent = `Turno terminado por tiempo (${data.jugador?.nombre || "Jugador"})`;
+  document.getElementById("btnLanzarDado").disabled = true;
+  document.getElementById("btnResponder").disabled = true;
+});
 // Conexión Socket.IO
 const socket = io();
 

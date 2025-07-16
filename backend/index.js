@@ -26,6 +26,8 @@ let jugadores = [];
 let partida = null;
 
 io.on("connection", (socket) => {
+  // Tiempo por turno (en segundos)
+  const TIEMPO_TURNO = 20;
   // Listener: leave-game (abandono voluntario)
   socket.on("leave-game", () => {
     if (partida && !partida.finalizada) {
@@ -68,6 +70,19 @@ io.on("connection", (socket) => {
       socket
         .to(jugadorActual.id)
         .emit("question", { pregunta: "Lanza el dado para avanzar" });
+      partida.iniciarTemporizador(TIEMPO_TURNO, () => {
+        io.emit("turn-timeout", { jugador: jugadorActual });
+        partida.turno = (partida.turno + 1) % partida.jugadores.length;
+        io.emit("game-state", { ...partida.getEstado() });
+        // Nuevo turno, reiniciar temporizador
+        const nuevoJugador = partida.getJugadorActual();
+        partida.iniciarTemporizador(TIEMPO_TURNO, () => {
+          io.emit("turn-timeout", { jugador: nuevoJugador });
+          partida.turno = (partida.turno + 1) % partida.jugadores.length;
+          io.emit("game-state", { ...partida.getEstado() });
+        });
+      });
+      io.emit("turn-timer", { segundos: TIEMPO_TURNO });
     }
   });
 
@@ -81,6 +96,7 @@ io.on("connection", (socket) => {
       });
       return;
     }
+    partida.cancelarTemporizador();
     const dado = data?.dado;
     const mov = partida.moverJugador(socket.id, dado);
     if (mov.error) {
@@ -92,6 +108,18 @@ io.on("connection", (socket) => {
     // Guardar destino temporalmente en socket
     socket._destino = mov.destino;
     io.emit("game-state", { ...partida.getEstado(), dado });
+    partida.iniciarTemporizador(TIEMPO_TURNO, () => {
+      io.emit("turn-timeout", { jugador: jugadorActual });
+      partida.turno = (partida.turno + 1) % partida.jugadores.length;
+      io.emit("game-state", { ...partida.getEstado() });
+      const nuevoJugador = partida.getJugadorActual();
+      partida.iniciarTemporizador(TIEMPO_TURNO, () => {
+        io.emit("turn-timeout", { jugador: nuevoJugador });
+        partida.turno = (partida.turno + 1) % partida.jugadores.length;
+        io.emit("game-state", { ...partida.getEstado() });
+      });
+      io.emit("turn-timer", { segundos: TIEMPO_TURNO });
+    });
   });
 
   socket.on("answer-question", (data) => {
@@ -104,6 +132,7 @@ io.on("connection", (socket) => {
       });
       return;
     }
+    partida.cancelarTemporizador();
     const correcta = !!data?.correcta;
     const destino = socket._destino;
     const res = partida.responderPregunta(socket.id, destino, correcta);
@@ -113,6 +142,14 @@ io.on("connection", (socket) => {
       jugadores = [];
     } else {
       io.emit("game-state", { ...partida.getEstado() });
+      // Nuevo turno, reiniciar temporizador
+      const nuevoJugador = partida.getJugadorActual();
+      partida.iniciarTemporizador(TIEMPO_TURNO, () => {
+        io.emit("turn-timeout", { jugador: nuevoJugador });
+        partida.turno = (partida.turno + 1) % partida.jugadores.length;
+        io.emit("game-state", { ...partida.getEstado() });
+      });
+      io.emit("turn-timer", { segundos: TIEMPO_TURNO });
     }
   });
 

@@ -1,4 +1,30 @@
 class Partida {
+  iniciarTemporizador(segundos, onTimeout) {
+    if (this._timer) clearTimeout(this._timer);
+    this.tiempoRestante = segundos;
+    this._timer = setTimeout(() => {
+      this.tiempoRestante = 0;
+      if (typeof onTimeout === 'function') onTimeout();
+    }, segundos * 1000);
+  }
+
+  cancelarTemporizador() {
+    if (this._timer) clearTimeout(this._timer);
+    this.tiempoRestante = null;
+  }
+  iniciarTemporizador(segundos, onTimeout) {
+    if (this._timer) clearTimeout(this._timer);
+    this.tiempoRestante = segundos;
+    this._timer = setTimeout(() => {
+      this.tiempoRestante = 0;
+      if (typeof onTimeout === 'function') onTimeout();
+    }, segundos * 1000);
+  }
+
+  cancelarTemporizador() {
+    if (this._timer) clearTimeout(this._timer);
+    this.tiempoRestante = null;
+  }
   constructor(jugadores, preguntas) {
     this.jugadores = jugadores.map((j, idx) => ({
       ...j,
