@@ -1,1 +1,0 @@
-// se envian las actualizaciones de posicion, turno, etc al front para actualizar la visual del HTML.
