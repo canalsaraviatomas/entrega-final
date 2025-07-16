@@ -60,6 +60,26 @@ socket.on("game-over", (data) => {
   }, 3500);
 });
 
+// Validar preguntas JSON
+document.getElementById("btnValidarJSON").onclick = async function () {
+  const resultadoDiv = document.getElementById("resultadoValidacion");
+  resultadoDiv.textContent = "Validando...";
+  try {
+    const res = await fetch("/api/validar-json");
+    const data = await res.json();
+    if (data.valido) {
+      resultadoDiv.style.color = "#388e3c";
+      resultadoDiv.textContent = "✔ El archivo Preguntas.json es válido.";
+    } else {
+      resultadoDiv.style.color = "#d32f2f";
+      resultadoDiv.textContent = "❌ Errores:\n" + data.errores.join("\n");
+    }
+  } catch (e) {
+    resultadoDiv.style.color = "#d32f2f";
+    resultadoDiv.textContent = "Error al validar el archivo.";
+  }
+};
+
 // Botón abandonar
 document.getElementById("btnAbandonar").onclick = function () {
   socket.emit("leave-game");
