@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 });
 
 const server = http.createServer(app);
-io.on("connection", (socket) => {
+const io = socketIO(server);
 
 const { obtenerPreguntas } = require('./game/logic/preguntas');
 const Partida = require('./game/logic/partida');
