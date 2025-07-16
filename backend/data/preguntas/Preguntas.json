@@ -1,1 +1,232 @@
-// TODO: implementar
+[
+  {
+    "numero": 1,
+    "pregunta": "¿Qué imagen comienza con la misma letra que la figura?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Pelota", "imagen": null, "audio": null, "correcta": true },
+      {
+        "texto": "Zanahoria",
+        "imagen": null,
+        "audio": null,
+        "correcta": false
+      },
+      { "texto": "Casco", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 2,
+    "pregunta": "¿Cuál de estos animales es un mamífero?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Tiburón", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Ballena", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Gallina", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 3,
+    "pregunta": "¿Qué fruta es amarilla?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Banana", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Manzana", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Pera", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 4,
+    "pregunta": "¿Cuál es el planeta más cercano al Sol?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Mercurio", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Venus", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Marte", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 5,
+    "pregunta": "¿Qué instrumento musical tiene teclas?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Guitarra", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Piano", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Batería", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 6,
+    "pregunta": "¿Cuál de estos es un color primario?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Verde", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Rojo", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Negro", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 7,
+    "pregunta": "¿Qué animal pone huevos?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Perro", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Gallina", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Gato", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 8,
+    "pregunta": "¿Cuál de estos es un medio de transporte?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Bicicleta", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Silla", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Mesa", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 9,
+    "pregunta": "¿Qué animal vive en el agua?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Delfín", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "León", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Caballo", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 10,
+    "pregunta": "¿Cuál de estos es un vegetal?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Zanahoria", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Manzana", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Pollo", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 11,
+    "pregunta": "¿Qué objeto sirve para escribir?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Lápiz", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Taza", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Regla", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 12,
+    "pregunta": "¿Cuál de estos es un continente?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Asia", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Egipto", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Amazonas", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 13,
+    "pregunta": "¿Qué animal es conocido por su cuello largo?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Jirafa", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Elefante", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Mono", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 14,
+    "pregunta": "¿Cuál de estos es un material de construcción?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Ladrillo", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Papel", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Vidrio", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 15,
+    "pregunta": "¿Qué animal es famoso por construir presas?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Castor", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Ratón", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Conejo", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 16,
+    "pregunta": "¿Cuál de estos es un aparato electrónico?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Televisor", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Mesa", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Silla", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 17,
+    "pregunta": "¿Qué animal es conocido por volar de noche?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      {
+        "texto": "Murciélago",
+        "imagen": null,
+        "audio": null,
+        "correcta": true
+      },
+      { "texto": "Gorrión", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Gallina", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 18,
+    "pregunta": "¿Cuál de estos es un objeto que da luz?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Linterna", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Cuchara", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Libro", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 19,
+    "pregunta": "¿Qué animal es conocido por su caparazón?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Tortuga", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Perro", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Gato", "imagen": null, "audio": null, "correcta": false }
+    ]
+  },
+  {
+    "numero": 20,
+    "pregunta": "¿Cuál de estos es un objeto para medir el tiempo?",
+    "imagenPregunta": null,
+    "audioPregunta": null,
+    "respuestas": [
+      { "texto": "Reloj", "imagen": null, "audio": null, "correcta": true },
+      { "texto": "Vaso", "imagen": null, "audio": null, "correcta": false },
+      { "texto": "Plato", "imagen": null, "audio": null, "correcta": false }
+    ]
+  }
+]
