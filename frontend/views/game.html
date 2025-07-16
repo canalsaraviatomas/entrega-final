@@ -90,5 +90,18 @@
     </div>
 
     <script src="/static/js/scriptTablero.js"></script>
+    <script>
+      // Generar casilleros del tablero dinámicamente
+      document.addEventListener("DOMContentLoaded", function () {
+        const tablero = document.getElementById("tablero");
+        for (let i = 1; i <= 20; i++) {
+          const p = document.createElement("p");
+          p.className = "texto";
+          p.id = i;
+          p.textContent = i;
+          tablero.appendChild(p);
+        }
+      });
+    </script>
   </body>
 </html>

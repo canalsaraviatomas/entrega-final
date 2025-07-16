@@ -121,7 +121,7 @@ function unirseAPartida() {
     nombre: nombre,
     id: id,
   };
-  fetch("/api/join", {
+  fetch("/api/join/" + id, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
