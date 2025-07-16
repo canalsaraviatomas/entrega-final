@@ -34,7 +34,9 @@
   background: #f44336;
   color: #fff;
 }
-.pregunta-area, .dado-area, .estado-area {
+.pregunta-area,
+.dado-area,
+.estado-area {
   margin-bottom: 20px;
   padding: 15px;
   background: #fff;

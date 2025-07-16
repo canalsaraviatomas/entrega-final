@@ -16,62 +16,91 @@ app.get("/", (req, res) => {
 });
 
 const server = http.createServer(app);
-const io = socketIO(server);
+io.on("connection", (socket) => {
 
-// Almacenar jugadores conectados temporalmente en memoria
+const { obtenerPreguntas } = require('./game/logic/preguntas');
+const Partida = require('./game/logic/partida');
+
 let jugadores = [];
-let partidaIniciada = false;
+let partida = null;
 
 io.on("connection", (socket) => {
   console.log(`🟢 Cliente conectado: ${socket.id}`);
 
-  // Listener: join-game
   socket.on("join-game", (data) => {
-    jugadores.push({
-      id: socket.id,
-      nombre: data?.nombre || `Jugador${jugadores.length + 1}`,
-    });
-    console.log(`Jugador unido: ${socket.id} (${data?.nombre})`);
-    io.emit("game-state", { jugadores, partidaIniciada });
-  });
-
-  // Listener: start-game
-  socket.on("start-game", () => {
-    if (jugadores.length >= 2 && !partidaIniciada) {
-      partidaIniciada = true;
-      console.log("Partida iniciada");
-      io.emit("game-state", { jugadores, partidaIniciada });
-      // Emitir pregunta genérica
-      io.emit("question", { pregunta: "Pregunta de ejemplo" });
+    if (jugadores.length < 2) {
+      jugadores.push({ id: socket.id, nombre: data?.nombre, color: data?.color });
+      console.log(`Jugador unido: ${socket.id} (${data?.nombre})`);
+      io.emit("game-state", { jugadores, partidaIniciada: !!partida });
+    } else {
+      socket.emit("game-state", { error: "Sala llena" });
     }
   });
 
-  // Listener: roll-dice
+  socket.on("start-game", () => {
+    if (jugadores.length === 2 && !partida) {
+      partida = new Partida(jugadores, obtenerPreguntas());
+      console.log("Partida iniciada");
+      io.emit("game-state", { ...partida.getEstado(), partidaIniciada: true });
+      // Primer turno: enviar pregunta al jugador activo
+      const jugadorActual = partida.getJugadorActual();
+      socket.to(jugadorActual.id).emit("question", { pregunta: "Lanza el dado para avanzar" });
+    }
+  });
+
   socket.on("roll-dice", (data) => {
-    console.log(`Dado lanzado por ${socket.id}:`, data);
-    // Emitir resultado a todos
-    io.emit("game-state", { jugadores, partidaIniciada, dado: data });
+    if (!partida || partida.finalizada) return;
+    const jugadorActual = partida.getJugadorActual();
+    if (socket.id !== jugadorActual.id) {
+      socket.emit("game-state", { ...partida.getEstado(), mensaje: "No es tu turno" });
+      return;
+    }
+    const dado = data?.dado;
+    const mov = partida.moverJugador(socket.id, dado);
+    if (mov.error) {
+      socket.emit("game-state", { ...partida.getEstado(), mensaje: mov.error });
+      return;
+    }
+    // Enviar pregunta de la casilla destino
+    socket.emit("question", mov.pregunta);
+    // Guardar destino temporalmente en socket
+    socket._destino = mov.destino;
+    io.emit("game-state", { ...partida.getEstado(), dado });
   });
 
-  // Listener: answer-question
   socket.on("answer-question", (data) => {
-    console.log(`Respuesta recibida de ${socket.id}:`, data);
-    // Emitir estado actualizado
-    io.emit("game-state", { jugadores, partidaIniciada });
-  });
-
-  // Listener: disconnect
-  socket.on("disconnect", () => {
-    console.log(`🔴 Cliente desconectado: ${socket.id}`);
-    // Eliminar jugador
-    jugadores = jugadores.filter((j) => j.id !== socket.id);
-    if (partidaIniciada && jugadores.length === 1) {
-      // Emitir game-over al único jugador restante
-      io.emit("game-over", { ganador: jugadores[0] });
-      partidaIniciada = false;
+    if (!partida || partida.finalizada) return;
+    const jugadorActual = partida.getJugadorActual();
+    if (socket.id !== jugadorActual.id) {
+      socket.emit("game-state", { ...partida.getEstado(), mensaje: "No es tu turno" });
+      return;
+    }
+    const correcta = !!data?.correcta;
+    const destino = socket._destino;
+    const res = partida.responderPregunta(socket.id, destino, correcta);
+    if (res.ganador) {
+      io.emit("game-over", { ganador: res.ganador });
+      partida = null;
       jugadores = [];
     } else {
-      io.emit("game-state", { jugadores, partidaIniciada });
+      io.emit("game-state", { ...partida.getEstado() });
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`🔴 Cliente desconectado: ${socket.id}`);
+    if (partida && !partida.finalizada) {
+      const res = partida.abandonar(socket.id);
+      if (res.ganador) {
+        io.emit("game-over", { ganador: res.ganador });
+        partida = null;
+        jugadores = [];
+      } else {
+        io.emit("game-state", { ...partida.getEstado() });
+      }
+    } else {
+      jugadores = jugadores.filter(j => j.id !== socket.id);
+      io.emit("game-state", { jugadores, partidaIniciada: !!partida });
     }
   });
 });
