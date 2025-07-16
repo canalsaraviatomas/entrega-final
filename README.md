@@ -1,32 +1,149 @@
-## Requerimientos del Juego 💀🤙:
+# 🧠 Juego de Preguntas y Respuestas Multijugador
 
-# Juego de preguntas y respuestas
+## 🎯 Objetivo
 
-El trabajo final consiste en el desarrollo de una plantilla para un juego multijugador (mínimo 2) que incluye un tablero con casilleros, un dado, preguntas y respuestas. Las preguntas y respuestas deben estar especificadas en un archivo JSON antes de iniciar la partida. Esto permitirá cambiar el set de preguntas y respuestas en cualquier momento, por ejemplo referidas a accesibilidad Web, a lecto escritura, etc. Para el alcance del trabajo final, con disponer de un conjunto de 20 preguntas y respuestas es suficiente. Al iniciar una partida, las preguntas y respuestas se asocian aleatoriamente a las casillas del tablero.
+Desarrollar un **juego de preguntas y respuestas multijugador** totalmente funcional, utilizando **Node.js**, con una **interfaz gráfica web**. El juego debe ser jugable de inicio a fin, mostrando tablero, fichas, preguntas y turnos.
 
-# Descripción del juego
+---
 
-Se tiene un tablero con un dado, una casilla de entrada, una casilla de salida y 20 casilleros intermedios, cada uno identificado con un número. Cada casillero incluye una pregunta y un conjunto de respuestas posibles con una única respuesta correcta. Gana el jugador que llega primero a la casilla de salida.
+## 🛠️ Tecnologías Requeridas
 
-# Desarrollo del juego
+- Backend: **Node.js**, con `Express` y `Socket.IO`
+- Frontend: **HTML, CSS y JavaScript**
+- Comunicación: **WebSockets** para eventos en tiempo real (turnos, movimiento, respuestas)
+- Preguntas: cargadas desde un archivo `JSON`
 
-El juego comienza cuando están los 2 jugadores conectados. Los jugadores eligen su ficha y se ubican en la casilla de entrada (posición inicial). El jugador tira un dado y obtiene un número. Se marca la casilla destino (posición actual + el número del dado) en el tablero y se visualiza la pregunta. El jugador deberá responder la pregunta. Si la responde correctamente, su ficha se mueve en la casilla destino. Si no responde correctamente, su ficha se mantiene en la casilla origen. Si llego a la casilla de salida gana el juego. Sino, le toca el turno al otro jugador y comienza desde el punto 1. Mientras un jugador juega, el otro jugador puede visualizar el tablero, la pregunta del jugador contrario y no puede tirar el dado. Un jugador no puede caer en una casilla ocupada. El jugador puede abandonar la partida en cualquier momento, dando por ganador al otro jugador. Las preguntas deberán ser aleatorias al momento de iniciar una nueva partida. Si se corta la conexión, se inicia una nueva partida. La ficha de un jugador se identifica por:
-El nombre del jugador
-Color (puede ser elegido una única vez)
-Cada casilla incluye:
-Un número
-Una pregunta en formato texto.
-Como máximo 3 respuestas, con 1 correcta.
-Incluir una figura en la pregunta (opcional)
-Incluir audio en la pregunta (opcional)
-Incluir una figura en las respuestas (opcional)
-Incluir audio en la respuesta (opcional)
-Toda la lógica del juego deberá resolverse del lado del servidor.
+---
 
-La pregunta contiene la pregunta: ¿Qué imagen comienza con la misma letra que la figura? Y las opciones para elegir pelota, zanahoria y casco. Con dos botones, uno verde de aceptar y el rojo de cancelar. El jugador deberá hacer clic para sobre la imagen y luego presionar el botón Aceptar para enviar la respuesta.
+## 📁 Estructura del Proyecto
 
-# Opcionales:
+Copilot debe construir exactamente esta estructura, creando cada carpeta y archivo necesario:
 
-Controlar el tiempo de cada jugada.
-Incluir un botón para validar el formato del archivo JSON de las preguntas
-Desarrollar el gestor de preguntas y respuestas.
+entrega-final/
+├── backend/
+│ ├── api/
+│ │ ├── controllers/
+│ │ │ └── controllers.js # Lógica de rutas HTTP (si aplica)
+│ │ ├── routes/
+│ │ │ └── routes.js # Rutas del API (por si se usa HTTP además de WebSocket)
+│ │ └── index.js # Inicializa API REST (opcional)
+│ ├── data/
+│ │ ├── partidas/
+│ │ │ └── partidas.json # Registro de partidas activas (opcional)
+│ │ └── preguntas/
+│ │ └── Preguntas.json # Banco de preguntas (mínimo 20)
+│ ├── game/
+│ │ ├── logic/
+│ │ │ ├── dado.js # Lógica del dado
+│ │ │ ├── jugadores.js # Lógica de los jugadores
+│ │ │ ├── MultiPlayers.js # Control multijugador (emparejar, turnos)
+│ │ │ ├── partida.js # Estado general de la partida
+│ │ │ ├── preguntas.js # Cargar y manejar preguntas
+│ │ │ └── tablero.js # Estructura del tablero
+│ │ └── index.js # Inicializa lógica del juego
+│ ├── imagenes/
+│ │ └── dado/
+│ │ └── sound.png # Recursos multimedia
+│ └── index.js # Servidor principal con Express y Socket.IO
+├── frontend/
+│ ├── css/
+│ │ ├── game.css # Estilos del tablero y jugabilidad
+│ │ └── menuLogin.css # Estilos del login/inicio
+│ ├── js/
+│ │ ├── game.js # Lógica del juego en el cliente
+│ │ └── menuLogin.js # Lógica de login
+│ └── views/
+│ ├── game.html # Tablero visual interactivo
+│ └── index.html # Pantalla de inicio/login
+
+---
+
+## 🎮 Reglas y Funcionalidades del Juego
+
+### Reglas Principales
+
+- 2 jugadores se conectan desde el navegador
+- Ambos eligen su nombre y color de ficha
+- Comienzan en la casilla de entrada (casilla 0)
+- Se turnan para lanzar un dado virtual (1–6)
+- Cada casilla tiene una **pregunta aleatoria** del JSON
+- Si el jugador responde bien, **avanza** a la casilla destino
+- Si responde mal, **permanece** en su lugar
+- Si la casilla está ocupada, **no se puede mover**
+- Gana quien llegue primero a la casilla final
+
+### Detalles Técnicos y Visuales
+
+- La interfaz debe mostrar:
+  - Tablero gráfico
+  - Pregunta actual
+  - Opciones de respuesta (texto, imagen o audio)
+  - Botón verde **Aceptar**
+  - Botón rojo **Cancelar**
+- Mientras un jugador juega, el otro solo observa
+- Si un jugador abandona, el otro gana
+- Si se corta la conexión, la partida se reinicia
+- Se debe evitar repetir preguntas en la misma partida
+
+---
+
+## 📄 Formato del Archivo de Preguntas (Preguntas.json)
+
+El archivo debe tener al menos **20 preguntas** en formato:
+
+```json
+[
+  {
+    "id": 1,
+    "pregunta": "¿Qué imagen comienza con la misma letra que la figura?",
+    "opciones": ["pelota", "zanahoria", "casco"],
+    "respuesta_correcta": "casco",
+    "imagen": "casco.png",
+    "audio": "pregunta1.mp3"
+  },
+  ...
+]
+```
+
+✅ Requisitos para Copilot
+Copilot debe:
+
+Crear toda la estructura de carpetas y archivos listada arriba
+
+Implementar la lógica de juego en backend, usando módulos para cada parte
+
+Servir la interfaz web desde Node, y conectarla con WebSocket
+
+Cargar y asignar preguntas al iniciar la partida
+
+Manejar eventos de jugador: turno, lanzamiento de dado, selección de respuesta
+
+Actualizar visualmente el tablero para ambos jugadores
+
+Mostrar mensajes de fin de partida o abandono
+
+Controlar que las casillas no puedan ser ocupadas por 2 fichas
+
+(Opcional) Validar el archivo JSON al cargar
+
+(Opcional) Agregar control de tiempo por turno
+
+🚀 Instrucciones de Desarrollo para Copilot Agent
+
+Primero crear toda la estructura de carpetas y archivos
+
+Luego:
+
+Implementar frontend/views/index.html con selector de jugador
+
+Implementar frontend/views/game.html con tablero y preguntas
+
+Conectar frontend y backend con Socket.IO
+
+Crear lógica del juego por módulos: jugadores, dado, tablero, etc.
+
+Cargar preguntas desde Preguntas.json y asignarlas aleatoriamente
+
+Probar con dos pestañas/localhosts para simular 2 jugadores
+
+Asegurar que sea jugable hasta el final, sin errores
