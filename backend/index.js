@@ -1,3 +1,4 @@
+// ...existing code...
 const express = require("express");
 const http = require("http");
 const path = require("path");
@@ -18,18 +19,38 @@ app.get("/", (req, res) => {
 const server = http.createServer(app);
 const io = socketIO(server);
 
-const { obtenerPreguntas } = require('./game/logic/preguntas');
-const Partida = require('./game/logic/partida');
+const { obtenerPreguntas } = require("./game/logic/preguntas");
+const Partida = require("./game/logic/partida");
 
 let jugadores = [];
 let partida = null;
 
 io.on("connection", (socket) => {
+  // Listener: leave-game (abandono voluntario)
+  socket.on("leave-game", () => {
+    if (partida && !partida.finalizada) {
+      const res = partida.abandonar(socket.id);
+      if (res.ganador) {
+        io.emit("game-over", { ganador: res.ganador });
+        partida = null;
+        jugadores = [];
+      } else {
+        io.emit("game-state", { ...partida.getEstado() });
+      }
+    }
+    // Si no hay partida, solo elimina el jugador
+    jugadores = jugadores.filter((j) => j.id !== socket.id);
+    io.emit("game-state", { jugadores, partidaIniciada: !!partida });
+  });
   console.log(`🟢 Cliente conectado: ${socket.id}`);
 
   socket.on("join-game", (data) => {
     if (jugadores.length < 2) {
-      jugadores.push({ id: socket.id, nombre: data?.nombre, color: data?.color });
+      jugadores.push({
+        id: socket.id,
+        nombre: data?.nombre,
+        color: data?.color,
+      });
       console.log(`Jugador unido: ${socket.id} (${data?.nombre})`);
       io.emit("game-state", { jugadores, partidaIniciada: !!partida });
     } else {
@@ -44,7 +65,9 @@ io.on("connection", (socket) => {
       io.emit("game-state", { ...partida.getEstado(), partidaIniciada: true });
       // Primer turno: enviar pregunta al jugador activo
       const jugadorActual = partida.getJugadorActual();
-      socket.to(jugadorActual.id).emit("question", { pregunta: "Lanza el dado para avanzar" });
+      socket
+        .to(jugadorActual.id)
+        .emit("question", { pregunta: "Lanza el dado para avanzar" });
     }
   });
 
@@ -52,7 +75,10 @@ io.on("connection", (socket) => {
     if (!partida || partida.finalizada) return;
     const jugadorActual = partida.getJugadorActual();
     if (socket.id !== jugadorActual.id) {
-      socket.emit("game-state", { ...partida.getEstado(), mensaje: "No es tu turno" });
+      socket.emit("game-state", {
+        ...partida.getEstado(),
+        mensaje: "No es tu turno",
+      });
       return;
     }
     const dado = data?.dado;
@@ -72,7 +98,10 @@ io.on("connection", (socket) => {
     if (!partida || partida.finalizada) return;
     const jugadorActual = partida.getJugadorActual();
     if (socket.id !== jugadorActual.id) {
-      socket.emit("game-state", { ...partida.getEstado(), mensaje: "No es tu turno" });
+      socket.emit("game-state", {
+        ...partida.getEstado(),
+        mensaje: "No es tu turno",
+      });
       return;
     }
     const correcta = !!data?.correcta;
@@ -99,7 +128,7 @@ io.on("connection", (socket) => {
         io.emit("game-state", { ...partida.getEstado() });
       }
     } else {
-      jugadores = jugadores.filter(j => j.id !== socket.id);
+      jugadores = jugadores.filter((j) => j.id !== socket.id);
       io.emit("game-state", { jugadores, partidaIniciada: !!partida });
     }
   });

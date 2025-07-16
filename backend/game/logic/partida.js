@@ -72,6 +72,14 @@ class Partida {
     }
     return { estado: this.getEstado() };
   }
+
+  reiniciar() {
+    this.jugadores = [];
+    this.turno = 0;
+    this.preguntas = [];
+    this.casillas = Array(22).fill(null);
+    this.finalizada = false;
+  }
 }
 
 module.exports = Partida;

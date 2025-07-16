@@ -23,11 +23,26 @@ socket.on("question", (data) => {
   document.getElementById("opciones").textContent = "(Opciones...)";
 });
 
-// Placeholder para game-over
+// Manejo de game-over
 socket.on("game-over", (data) => {
-  document.getElementById("estado").textContent =
-    "¡Ganador: " + (data.ganador?.nombre || "Jugador") + "!";
+  document.getElementById("finJuego").style.display = "block";
+  document.getElementById("finJuego").textContent =
+    "¡Fin de la partida! Ganador: " + (data.ganador?.nombre || "Jugador") + "";
+  setTimeout(() => {
+    window.location.href = "/views/index.html";
+  }, 3500);
 });
+
+// Botón abandonar
+document.getElementById("btnAbandonar").onclick = function () {
+  socket.emit("leave-game");
+  document.getElementById("finJuego").style.display = "block";
+  document.getElementById("finJuego").textContent =
+    "Has abandonado la partida.";
+  setTimeout(() => {
+    window.location.href = "/views/index.html";
+  }, 2000);
+};
 
 // Botones deshabilitados por ahora
 document.getElementById("btnLanzarDado").disabled = true;
