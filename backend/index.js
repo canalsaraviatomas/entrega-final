@@ -11,6 +11,10 @@ app.use("/css", express.static(path.join(__dirname, "../frontend/css")));
 app.use("/js", express.static(path.join(__dirname, "../frontend/js")));
 app.use("/views", express.static(path.join(__dirname, "../frontend/views")));
 
+// API REST
+const apiApp = require("./api/index");
+app.use("/api", apiApp);
+
 // Ruta raíz sirve index.html
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/views/index.html"));
