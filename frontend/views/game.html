@@ -1,1 +1,60 @@
-<!-- TODO: implementar -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego Preguntas</title>
+  <link rel="stylesheet" href="/css/game.css">
+</head>
+<body>
+  <div class="game-container">
+    <h2>Juego de Preguntas y Respuestas</h2>
+    <div class="tablero">
+      <!-- Tablero de 22 casillas -->
+      <div class="casillas">
+        <div class="casilla entrada">Entrada</div>
+        <!-- 20 casillas intermedias -->
+        <div class="casilla" data-num="1">1</div>
+        <div class="casilla" data-num="2">2</div>
+        <div class="casilla" data-num="3">3</div>
+        <div class="casilla" data-num="4">4</div>
+        <div class="casilla" data-num="5">5</div>
+        <div class="casilla" data-num="6">6</div>
+        <div class="casilla" data-num="7">7</div>
+        <div class="casilla" data-num="8">8</div>
+        <div class="casilla" data-num="9">9</div>
+        <div class="casilla" data-num="10">10</div>
+        <div class="casilla" data-num="11">11</div>
+        <div class="casilla" data-num="12">12</div>
+        <div class="casilla" data-num="13">13</div>
+        <div class="casilla" data-num="14">14</div>
+        <div class="casilla" data-num="15">15</div>
+        <div class="casilla" data-num="16">16</div>
+        <div class="casilla" data-num="17">17</div>
+        <div class="casilla" data-num="18">18</div>
+        <div class="casilla" data-num="19">19</div>
+        <div class="casilla" data-num="20">20</div>
+        <div class="casilla salida">Salida</div>
+      </div>
+    </div>
+    <div class="pregunta-area">
+      <h3>Pregunta</h3>
+      <div id="pregunta">(Aquí aparecerá la pregunta)</div>
+      <div id="opciones">(Opciones...)</div>
+      <button id="btnResponder" disabled>Responder</button>
+    </div>
+    <div class="dado-area">
+      <h3>Dado</h3>
+      <div id="dado">🎲</div>
+      <button id="btnLanzarDado" disabled>Lanzar Dado</button>
+    </div>
+    <div class="estado-area">
+      <h3>Estado</h3>
+      <div id="turno">Turno actual: --</div>
+      <div id="estado">Esperando jugadores...</div>
+    </div>
+  </div>
+  <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+  <script src="/js/game.js"></script>
+</body>
+</html>

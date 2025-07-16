@@ -1,1 +1,57 @@
-/* TODO: implementar */
+.game-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #ccc;
+}
+.tablero {
+  margin-bottom: 30px;
+}
+.casillas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.casilla {
+  width: 60px;
+  height: 60px;
+  background: #e0e0e0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1em;
+  border: 2px solid #bdbdbd;
+}
+.casilla.entrada {
+  background: #81c784;
+  color: #fff;
+}
+.casilla.salida {
+  background: #f44336;
+  color: #fff;
+}
+.pregunta-area, .dado-area, .estado-area {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px #eee;
+}
+button {
+  margin-top: 10px;
+  padding: 8px 18px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+}
+button:disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
+}

@@ -1,1 +1,36 @@
-/* TODO: implementar */
+.login-container {
+  max-width: 350px;
+  margin: 60px auto;
+  padding: 30px;
+  background: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #ccc;
+}
+label {
+  display: block;
+  margin-top: 15px;
+}
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+}
+input[type="color"] {
+  margin-top: 5px;
+}
+button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 10px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+}
+button:hover {
+  background: #1565c0;
+}
